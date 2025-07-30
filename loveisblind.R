@@ -26,3 +26,19 @@ s6cast_final <- s6cast %>%
   separate_wider_delim(age_jobs_all_s6, delim = ", ", names = c("age","job")) %>%
   mutate(season = "6") %>%
   rename(names = names_s6)
+
+# alt version
+s6cast_df <- tibble(
+  names = s6page %>%
+    html_elements(".e1l1jp228 h3") %>%
+    html_text2(),
+  age_jobs_all_s6 = age_jobs_all_s6,
+  ) %>%
+  mutate(age_jobs_all_s6 = str_remove(age_jobs_all_s6,"Age and Occupation")) %>%
+  separate_wider_delim(age_jobs_all_s6, delim = ", ", names = c("age","job")) %>%
+  mutate(season = "6")
+
+# grab all the instagram and tiktok links too
+social_links = s6page %>%
+  html_elements(".e1l1jp226 a") %>%
+  html_attr("href")
